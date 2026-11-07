@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta name="theme-color" content="#071018">
+  <link rel="icon" href="data:,">
+  <title>Neon Front — 4v4</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game-shell">
+    <canvas id="view" aria-label="First person shooter game"></canvas>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <header id="top-hud" class="hud hidden">
+      <div class="team-score blue"><span class="team-name">PHANTOM</span><strong id="blue-score">00</strong></div>
+      <div class="match-clock"><span class="live-dot"></span><span id="clock">10:00</span><small>ROUND 01 / 01</small></div>
+      <div class="team-score red"><strong id="red-score">00</strong><span class="team-name">VANGUARD</span></div>
+    </header>
+    <div id="objective" class="hud hidden"><span class="objective-icon">✦</span><span>ELIMINATE ENEMY OPERATORS</span><i>•</i><b>FIRST TO 50 / HIGH SCORE WINS</b></div>
+    <div id="killfeed" class="hud"></div>
+    <div id="minimap-frame" class="hud hidden"><span class="map-label">TACTICAL / A-01</span><canvas id="minimap" width="144" height="144"></canvas></div>
+    <div id="center-status" class="hud hidden"><span id="status-text">MATCH LIVE</span></div>
+    <div id="crosshair" class="hud hidden"><i></i><i></i><i></i><i></i><b></b></div>
+    <div id="hit-marker" class="hud hidden">×</div>
+    <div id="damage-vignette" class="hud"></div>
+    <div id="bottom-hud" class="hud hidden">
+      <div class="health-panel"><div class="health-icon">+</div><div><small>VITALS</small><strong id="health">100</strong></div><div class="health-track"><i id="health-bar"></i></div></div>
+      <div class="bottom-center"><div class="mode-tag"><span></span> TEAM DEATHMATCH</div><div id="tip">WASD MOVE <b>·</b> MOUSE AIM <b>·</b> CLICK FIRE</div></div>
+      <div class="ammo-panel"><div class="weapon-label"><small>PRIMARY / 01</small><strong>VXR-9 <em>RIFLE</em></strong></div><div class="ammo"><strong id="ammo">30</strong><span>/ 120</span></div><div class="reload-line"><i id="reload-bar"></i></div></div>
+    </div>
+    <div id="controls-hint" class="hud hidden"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> MOVE <span>·</span> <kbd>SHIFT</kbd> SPRINT <span>·</span> <kbd>R</kbd> RELOAD <span>·</span> <kbd>ESC</kbd> PAUSE</div>
+    <section id="start-screen" class="screen">
+      <div class="menu-top"><div class="brand"><span class="brand-mark">N</span><span>NEON<span class="brand-light">FRONT</span></span></div><div class="season">SECTOR 09 <span>///</span> LIVE COMBAT SIMULATION</div></div>
+      <div class="menu-content">
+        <div class="eyebrow"><span></span> MULTIPLAYER / TEAM DEATHMATCH</div>
+        <h1>OWN THE<br><em>FRONTLINE.</em></h1>
+        <p class="lead">Four operators. One objective.<br>Make every shot count.</p>
+        <div class="match-card">
+          <div class="card-head"><span>MISSION BRIEF</span><b>01 — 01</b></div>
+          <div class="brief-row"><div class="brief-icon">◷</div><div><small>TIME LIMIT</small><strong>10 MINUTES</strong></div><div class="brief-icon target">◎</div><div><small>FIRETEAM</small><strong>4 vs 4</strong></div></div>
+          <div class="brief-foot"><span class="blue-dot"></span> PHANTOM SQUAD <i>VS</i> <span class="red-dot"></span> VANGUARD</div>
+        </div>
+        <button id="deploy" class="deploy-button"><span>DEPLOY TO BATTLE</span><b>→</b></button>
+        <div class="menu-note"><span>⌖</span> YOUR SQUAD IS COUNTING ON YOU</div>
+      </div>
+      <div class="menu-footer"><span>NF / COMBAT DIVISION</span><span>TRAINING SIMULATION <i>●</i> READY</span></div>
+      <div class="hero-art"><div class="hero-ring ring-one"></div><div class="hero-ring ring-two"></div><div class="hero-cross">+</div><div class="hero-soldier"><div class="soldier-head"></div><div class="soldier-body"></div><div class="soldier-rifle"></div></div><div class="art-label">09° 41' 22" N<br>SECTOR / INDUSTRIAL</div></div>
+    </section>
+    <section id="pause-screen" class="screen hidden">
+      <div class="pause-panel"><div class="eyebrow"><span></span> COMBAT PAUSED</div><h2>TAKE A<br><em>BREATHER.</em></h2><p>Your squad is holding position.</p><button id="resume" class="deploy-button"><span>RESUME MATCH</span><b>→</b></button><button id="quit" class="quiet-button">RETURN TO BRIEFING</button><div class="pause-stats"><span>PHANTOM <b id="pause-blue">00</b></span><i>—</i><span>VANGUARD <b id="pause-red">00</b></span></div></div>
+    </section>
+    <section id="result-screen" class="screen hidden"><div class="result-panel"><div class="eyebrow"><span></span> MISSION COMPLETE</div><h2 id="result-title">VICTORY</h2><p id="result-copy">PHANTOM SQUAD OWNS THE FRONTLINE.</p><div class="result-score"><div><small>PHANTOM</small><strong id="result-blue">00</strong></div><span>—</span><div><small>VANGUARD</small><strong id="result-red">00</strong></div></div><div class="result-summary"><span>YOUR ELIMINATIONS <b id="result-kills">00</b></span><span>ACCURACY <b id="result-accuracy">0%</b></span></div><button id="again" class="deploy-button"><span>DEPLOY AGAIN</span><b>↻</b></button></div></section>
+    <div id="mobile-controls" class="hud hidden"><div id="move-pad" class="touch-pad"><span class="pad-label">MOVE</span><i></i></div><div class="touch-actions"><button id="touch-reload">↻<small>RELOAD</small></button><button id="touch-fire">◎<small>FIRE</small></button></div></div>
+    <div id="toast" class="hud"></div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
